@@ -73,14 +73,18 @@ public class FirebaseLeaderboardClient : MonoBehaviour
         return await SubmitRunAsync(score, survivalSeconds, displayName, avatarId);
     }
 
-    public async Task<IndonesiaLeaderboardSnapshot> GetTopAsync(int limit = 100)
+    public async Task<IndonesiaLeaderboardSnapshot> GetTopAsync(int limit = 100, string period = "all")
     {
         if (!IsReady || functions == null) return new IndonesiaLeaderboardSnapshot();
 
         try
         {
             var callable = functions.GetHttpsCallable("getIndonesiaLeaderboard");
-            var result = await callable.CallAsync(new Dictionary<string, object> { { "limit", limit } });
+            var result = await callable.CallAsync(new Dictionary<string, object>
+            {
+                { "limit", limit },
+                { "period", period }
+            });
             var root = result.Data as IDictionary<string, object>;
             if (root == null) return new IndonesiaLeaderboardSnapshot();
 
@@ -138,7 +142,7 @@ public class FirebaseLeaderboardClient : MonoBehaviour
     public Task<bool> SubmitRunWhenReadyAsync(int score, float survivalSeconds, string displayName, string avatarId) =>
         Task.FromResult(false);
 
-    public Task<IndonesiaLeaderboardSnapshot> GetTopAsync(int limit = 100) =>
+    public Task<IndonesiaLeaderboardSnapshot> GetTopAsync(int limit = 100, string period = "all") =>
         Task.FromResult(new IndonesiaLeaderboardSnapshot());
 #endif
 }
