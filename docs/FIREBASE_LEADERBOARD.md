@@ -14,6 +14,7 @@ The repository includes a Firebase Functions v2 backend and an optional Unity cl
 The callable functions use region `asia-southeast2`:
 - `submitRun`: accepts authenticated run submissions, forces country code `ID`, checks score against elapsed time, and keeps each player's best score.
 - `getIndonesiaLeaderboard`: returns up to 100 ranked entries and the signed-in player's rank.
+- The leaderboard supports all-time, weekly (Monday–Sunday, Jakarta time), and monthly periods.
 
 ## Unity client
 
