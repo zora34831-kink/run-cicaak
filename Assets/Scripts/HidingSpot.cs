@@ -5,6 +5,7 @@ public class HidingSpot : MonoBehaviour
     public Transform hidePosition;
     public float interactDistance = 2.2f;
     private PlayerController player;
+    private static HidingSpot activeSpot;
 
     void Awake()
     {
@@ -41,11 +42,19 @@ public class HidingSpot : MonoBehaviour
             }
 
             player.SetHidden(true);
+            activeSpot = this;
             GameManager.Instance?.RegisterHide();
         }
         else
         {
             player.SetHidden(false);
+            if (activeSpot == this) activeSpot = null;
         }
+    }
+
+    public static void ExitCurrentHide(PlayerController target)
+    {
+        if (activeSpot == null || target == null || activeSpot.player != target) return;
+        activeSpot.ToggleHide();
     }
 }
