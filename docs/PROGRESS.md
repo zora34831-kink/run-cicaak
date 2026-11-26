@@ -43,3 +43,5 @@ The repository is a playable-prototype codebase and build scaffold. It is not ye
 
 - [x] Chase balance adjusted: the human walks faster than the gecko's normal movement, while sprinting remains a way to create distance
 - [x] Gameplay HUD now displays the player's XP progress alongside level
+
+- [x] Android workflow now caches Unity Library and validates the generated APK archive before uploading the artifact
