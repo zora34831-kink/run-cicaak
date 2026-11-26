@@ -6,7 +6,8 @@
 - [x] Android touch joystick, action buttons, and pause menu
 - [x] Four-room procedural house blockout with connecting floor sections and distinct furniture props
 - [x] Procedural gecko and human placeholder models
-- [x] Basic hiding spots and hide/exit interaction
+- [x] Basic hiding spots and hide/exit interaction, including tracking the exact active hiding spot
+- [x] Temporary Indonesian gameplay instruction hint
 - [x] Human chase prototype with basic obstacle steering
 - [x] Procedural gecko leg/tail motion and human walk animation
 - [x] Cartoon catch launch sequence
