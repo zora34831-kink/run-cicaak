@@ -72,6 +72,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         CameraFollow follow = cameraObject.GetComponent<CameraFollow>();
         if (follow == null) follow = cameraObject.AddComponent<CameraFollow>();
         follow.target = player.transform;
+        playerController.cameraTransform = cameraObject.transform;
 
         CreateManager<GameManager>("Game Manager");
         CreateManager<ProgressionManager>("Progression Manager");
