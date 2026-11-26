@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (IsCaught) return;
+        if (cameraTransform == null && Camera.main != null)
+            cameraTransform = Camera.main.transform;
 
 #if UNITY_EDITOR || UNITY_STANDALONE
         moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
