@@ -7,7 +7,7 @@ RUN CICAAK is a third-person Android gecko escape game prototype built with Unit
 - Unity 2022.3 LTS project scaffold.
 - Runtime-generated four-room house blockout (living room, kitchen, bedroom, storage).
 - Gecko movement, jump, sprint, hiding and mobile touch controls.
-- Human chase prototype with basic obstacle steering.
+- Human chase prototype with basic obstacle steering and procedural character motion.
 - Collectible coins, persistent wallet, score, survival timer, XP and levels.
 - Gecko skin selection and shop logic.
 - Escape/caught result screen and local achievements.
