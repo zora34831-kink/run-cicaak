@@ -49,3 +49,5 @@ The repository is a playable-prototype codebase and build scaffold. It is not ye
 - [x] Right-side level and XP HUD anchors corrected to stay within the landscape mobile screen
 
 - [x] Settings now exposes both sound-effects and haptic toggles
+
+- [x] Haptic feedback remains active for gameplay events even when sound effects are switched off
