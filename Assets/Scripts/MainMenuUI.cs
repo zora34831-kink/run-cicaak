@@ -251,7 +251,14 @@ public class MainMenuUI : MonoBehaviour
             PlayerPrefs.Save();
             ShowSettings();
         });
-        CreateText(page, "Graphics: Optimized for Android", 20, new Vector2(0, -35), new Vector2(800, 55), TextAnchor.MiddleCenter);
+        bool sound = PlayerPrefs.GetInt("RUN_CICAAK_SFX", 1) == 1;
+        CreateButton(page, "SOUND EFFECTS  " + (sound ? "ON" : "OFF"), new Vector2(0, -20), new Vector2(620, 72), () =>
+        {
+            PlayerPrefs.SetInt("RUN_CICAAK_SFX", sound ? 0 : 1);
+            PlayerPrefs.Save();
+            ShowSettings();
+        });
+        CreateText(page, "Graphics: Optimized for Android", 20, new Vector2(0, -125), new Vector2(800, 55), TextAnchor.MiddleCenter);
         CreateButton(page, "BACK", new Vector2(0, -425), new Vector2(460, 68), ShowHome);
     }
 
