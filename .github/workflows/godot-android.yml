@@ -47,15 +47,16 @@ jobs:
 
       - name: Export Android APK
         run: |
-          mkdir -p build
+          set -euo pipefail
+          mkdir -p godot/build
           godot --headless --path godot --export-debug "Android" build/RUN-CICAAK.apk
-          test -s build/RUN-CICAAK.apk
-          unzip -t build/RUN-CICAAK.apk
+          test -s godot/build/RUN-CICAAK.apk
+          unzip -t godot/build/RUN-CICAAK.apk
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: RUN-CICAAK-Godot-Android-APK
-          path: build/RUN-CICAAK.apk
+          path: godot/build/RUN-CICAAK.apk
           if-no-files-found: error
           retention-days: 14
