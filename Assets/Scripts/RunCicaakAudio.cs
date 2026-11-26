@@ -24,9 +24,9 @@ public static class RunCicaakAudio
 
     private static void Play(ref AudioClip clip, string clipName, float[] notes, float duration, float volume)
     {
-        if (PlayerPrefs.GetInt("RUN_CICAAK_SFX", 1) == 0) return;
         if (PlayerPrefs.GetInt("RUN_CICAAK_HAPTICS", 1) == 1 && Application.isMobilePlatform)
             Handheld.Vibrate();
+        if (PlayerPrefs.GetInt("RUN_CICAAK_SFX", 1) == 0) return;
         if (clip == null) clip = BuildClip(clipName, notes, duration);
 
         Vector3 position = Camera.main != null ? Camera.main.transform.position : Vector3.zero;
