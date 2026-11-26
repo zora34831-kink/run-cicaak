@@ -14,6 +14,7 @@ public class HumanChaserAI : MonoBehaviour
     private CharacterController motor;
     private Vector3 verticalVelocity;
     private float searchTimer;
+    private Vector3 lastKnownPosition;
 
     public bool IsMoving { get; private set; }
 
@@ -24,7 +25,11 @@ public class HumanChaserAI : MonoBehaviour
 
     void Start()
     {
-        if (target != null) player = target.GetComponent<PlayerController>();
+        if (target != null)
+        {
+            player = target.GetComponent<PlayerController>();
+            lastKnownPosition = target.position;
+        }
     }
 
     void Update()
@@ -36,11 +41,26 @@ public class HumanChaserAI : MonoBehaviour
         if (player.IsHidden)
         {
             searchTimer += Time.deltaTime;
-            ApplyGravityOnly();
+            Vector3 toLastSeen = lastKnownPosition - transform.position;
+            toLastSeen.y = 0f;
+
+            if (searchTimer < searchDuration && toLastSeen.magnitude > 1.6f)
+            {
+                Vector3 searchDirection = AvoidObstacles(toLastSeen.normalized);
+                IsMoving = searchDirection.sqrMagnitude > 0.01f;
+                MoveCharacter(searchDirection * walkSpeed * 0.72f);
+            }
+            else
+            {
+                IsMoving = false;
+                ApplyGravityOnly();
+                transform.Rotate(Vector3.up, 32f * Time.deltaTime, Space.World);
+            }
             return;
         }
 
         searchTimer = 0f;
+        lastKnownPosition = target.position;
         Vector3 toTarget = target.position - transform.position;
         toTarget.y = 0f;
         float distance = toTarget.magnitude;
