@@ -21,6 +21,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
     [ContextMenu("Build Prototype House")]
     public void Build()
     {
+        ConfigureMobilePerformance();
         if (FindObjectOfType<PlayerController>() != null)
         {
             Debug.LogWarning("RUN CICAAK: Player sudah ada. Bootstrap dilewati agar tidak membuat duplikat.");
@@ -166,7 +167,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         Collider partCollider = part.GetComponent<Collider>();
         if (partCollider != null) Destroy(partCollider);
         Renderer renderer = part.GetComponent<Renderer>();
-        renderer.material = material;
+        renderer.sharedMaterial = material;
         return renderer;
     }
 
@@ -176,7 +177,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         floor.name = label + " Floor";
         floor.transform.position = center + new Vector3(0, -0.15f, 0);
         floor.transform.localScale = new Vector3(roomSize, 0.3f, roomSize);
-        floor.GetComponent<Renderer>().material = floorMat;
+        floor.GetComponent<Renderer>().sharedMaterial = floorMat;
 
         CreateWallWithOpening(label + " Wall North", center, true, roomSize / 2, 2.4f);
         CreateWallWithOpening(label + " Wall South", center, true, -roomSize / 2, 2.4f);
@@ -188,7 +189,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         cabinet.name = label + " Hiding Cabinet";
         cabinet.transform.position = furniturePosition;
         cabinet.transform.localScale = new Vector3(1.7f, 1.3f, 1.1f);
-        cabinet.GetComponent<Renderer>().material = furnitureMat;
+        cabinet.GetComponent<Renderer>().sharedMaterial = furnitureMat;
 
         GameObject hideAnchor = new GameObject("Hide Position");
         hideAnchor.transform.position = new Vector3(furniturePosition.x - 1.1f, 0f, furniturePosition.z);
@@ -200,7 +201,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         table.name = label + " Table";
         table.transform.position = center + new Vector3(-2.3f, 0.65f, -1.8f);
         table.transform.localScale = new Vector3(2.1f, 1.3f, 1.5f);
-        table.GetComponent<Renderer>().material = furnitureMat;
+        table.GetComponent<Renderer>().sharedMaterial = furnitureMat;
 
         BuildRoomProps(label, center);
     }
@@ -241,7 +242,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         prop.name = name;
         prop.transform.position = position;
         prop.transform.localScale = scale;
-        prop.GetComponent<Renderer>().material = material;
+        prop.GetComponent<Renderer>().sharedMaterial = material;
     }
 
     void CreateCorridor(Vector3 position, Vector3 scale)
@@ -250,7 +251,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         corridor.name = "Room Connector Floor";
         corridor.transform.position = position;
         corridor.transform.localScale = scale;
-        corridor.GetComponent<Renderer>().material = floorMat;
+        corridor.GetComponent<Renderer>().sharedMaterial = floorMat;
     }
 
     void CreateEscapeExit(Vector3 position)
@@ -259,7 +260,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         exit.name = "Escape Exit";
         exit.transform.position = position;
         exit.transform.localScale = new Vector3(1.8f, 0.12f, 1.8f);
-        exit.GetComponent<Renderer>().material = coinMat;
+        exit.GetComponent<Renderer>().sharedMaterial = coinMat;
         exit.AddComponent<EscapeZone>();
     }
 
@@ -286,7 +287,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         wall.name = label;
         wall.transform.position = position;
         wall.transform.localScale = scale;
-        wall.GetComponent<Renderer>().material = wallMat;
+        wall.GetComponent<Renderer>().sharedMaterial = wallMat;
     }
 
     void CreateCoins(Vector3 start)
@@ -297,7 +298,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
             coin.name = "Coin";
             coin.transform.position = start + new Vector3(i * 0.65f, 0, 0);
             coin.transform.localScale = Vector3.one * 0.35f;
-            coin.GetComponent<Renderer>().material = coinMat;
+            coin.GetComponent<Renderer>().sharedMaterial = coinMat;
             coin.AddComponent<CoinPickup>();
         }
     }
@@ -422,6 +423,20 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         light.type = LightType.Directional;
         light.intensity = 1.1f;
         lightObject.transform.rotation = Quaternion.Euler(50, -30, 0);
+    }
+
+
+    void ConfigureMobilePerformance()
+    {
+        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 0;
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        if (Application.isMobilePlatform)
+        {
+            QualitySettings.antiAliasing = 2;
+            QualitySettings.shadows = ShadowQuality.HardOnly;
+            QualitySettings.shadowResolution = ShadowResolution.Low;
+        }
     }
 
     Material MakeMaterial(Color color)
