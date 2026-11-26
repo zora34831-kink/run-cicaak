@@ -74,6 +74,8 @@ public class PlayerController : MonoBehaviour
         IsCaught = true;
         moveInput = Vector2.zero;
         sprinting = false;
-        GameManager.Instance?.EndRun();
+        CatchSequence sequence = GetComponent<CatchSequence>();
+        if (sequence != null) sequence.Play();
+        else GameManager.Instance?.EndRun();
     }
 }
