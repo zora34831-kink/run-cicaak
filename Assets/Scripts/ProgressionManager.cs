@@ -23,6 +23,7 @@ public class ProgressionManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         Level = Mathf.Max(startingLevel, PlayerPrefs.GetInt(LevelKey, startingLevel));
         TotalXP = Mathf.Max(0, PlayerPrefs.GetInt(XPKey, 0));
+        RecalculateLevel();
         Notify();
     }
 
@@ -30,13 +31,18 @@ public class ProgressionManager : MonoBehaviour
     {
         if (amount <= 0) return;
         TotalXP += amount;
-        while (TotalXP >= xpPerLevel * Level)
-            Level++;
-
+        RecalculateLevel();
         PlayerPrefs.SetInt(LevelKey, Level);
         PlayerPrefs.SetInt(XPKey, TotalXP);
         PlayerPrefs.Save();
         Notify();
+    }
+
+    private void RecalculateLevel()
+    {
+        Level = Mathf.Max(1, startingLevel);
+        while (TotalXP >= XPRequiredBeforeLevel(Level + 1))
+            Level++;
     }
 
     public int XPIntoCurrentLevel => TotalXP - XPRequiredBeforeLevel(Level);
