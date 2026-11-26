@@ -24,3 +24,6 @@ node_modules/
 .firebase/
 .env
 .env.*
+google-services.json
+GoogleService-Info.plist
+serviceAccountKey*.json
