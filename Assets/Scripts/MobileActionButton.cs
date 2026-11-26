@@ -17,6 +17,8 @@ public class MobileActionButton : MonoBehaviour, IPointerDownHandler, IPointerUp
     public void OnPointerDown(PointerEventData eventData)
     {
         if (player == null) return;
+        if (PlayerPrefs.GetInt("RUN_CICAAK_HAPTICS", 1) == 1)
+            Handheld.Vibrate();
 
         switch (actionType)
         {
