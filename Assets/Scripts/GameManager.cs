@@ -92,6 +92,15 @@ public class GameManager : MonoBehaviour
         );
 
         PlayerPrefs.Save();
+
+        FirebaseLeaderboardClient leaderboard = FirebaseLeaderboardClient.Instance;
+        if (leaderboard != null)
+        {
+            string playerName = PlayerPrefs.GetString("RUN_CICAAK_PLAYER_NAME", "Gecko");
+            string avatarId = GeckoShop.Instance != null ? GeckoShop.Instance.SelectedSkinId : "classic";
+            _ = leaderboard.SubmitRunWhenReadyAsync(Score, SurvivalTime, playerName, avatarId);
+        }
+
         Debug.Log("RUN CICAAK selesai. Score: " + Score + " | Waktu: " + SurvivalTime.ToString("F1") + "s | Escape: " + escaped);
         RunFinished?.Invoke(escaped);
     }
