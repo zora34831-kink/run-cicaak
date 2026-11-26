@@ -7,6 +7,7 @@
 - [x] Four-room procedural house blockout with connecting floor sections
 - [x] Basic hiding spots and hide/exit interaction
 - [x] Human chase prototype with basic obstacle steering
+- [x] Procedural gecko leg/tail motion and human walk animation
 - [x] Cartoon catch launch sequence
 - [x] Escape zone and run result overlay
 - [x] Coins, score, survival timer, local best score, XP and levels
