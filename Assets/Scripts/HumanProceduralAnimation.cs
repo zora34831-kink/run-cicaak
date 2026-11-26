@@ -12,7 +12,7 @@ public class HumanProceduralAnimation : MonoBehaviour
     private Quaternion leftStart, rightStart;
     private Vector3 torsoStart;
 
-    void Awake()
+    void Start()
     {
         if (chaser == null) chaser = GetComponent<HumanChaserAI>();
         if (leftArm != null) leftStart = leftArm.localRotation;
