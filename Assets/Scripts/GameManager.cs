@@ -81,6 +81,7 @@ public class GameManager : MonoBehaviour
         RunEnded = true;
         Escaped = escaped;
         Time.timeScale = 1f;
+        if (escaped) RunCicaakAudio.PlayEscape(); else RunCicaakAudio.PlayCaught();
 
         int best = PlayerPrefs.GetInt("RUN_CICAAK_BEST", 0);
         if (Score > best)
