@@ -8,6 +8,7 @@ public class MainMenuUI : MonoBehaviour
     private RectTransform page;
     private Text statusText;
     private MainMenuController navigation;
+    private string leaderboardPeriod = "all";
 
     void Awake()
     {
@@ -116,10 +117,19 @@ public class MainMenuUI : MonoBehaviour
     {
         ClearPage();
         CreateText(page, "INDONESIA TOP 100", 46, new Vector2(0, 420), new Vector2(900, 80), TextAnchor.MiddleCenter);
-        statusText = CreateText(page, "Loading leaderboard...", 20, new Vector2(0, 20), new Vector2(1000, 650), TextAnchor.UpperCenter);
-        CreateButton(page, "REFRESH", new Vector2(-130, -410), new Vector2(360, 68), LoadLeaderboard);
-        CreateButton(page, "BACK", new Vector2(230, -410), new Vector2(360, 68), ShowHome);
+        CreateButton(page, "ALL TIME", new Vector2(-300, 330), new Vector2(280, 62), () => SetLeaderboardPeriod("all"));
+        CreateButton(page, "WEEKLY", new Vector2(0, 330), new Vector2(280, 62), () => SetLeaderboardPeriod("weekly"));
+        CreateButton(page, "MONTHLY", new Vector2(300, 330), new Vector2(280, 62), () => SetLeaderboardPeriod("monthly"));
+        statusText = CreateText(page, "Loading leaderboard...", 20, new Vector2(0, -5), new Vector2(1000, 650), TextAnchor.UpperCenter);
+        CreateButton(page, "REFRESH", new Vector2(-130, -420), new Vector2(360, 68), LoadLeaderboard);
+        CreateButton(page, "BACK", new Vector2(230, -420), new Vector2(360, 68), ShowHome);
         LoadLeaderboard();
+    }
+
+    void SetLeaderboardPeriod(string period)
+    {
+        leaderboardPeriod = period;
+        ShowLeaderboard();
     }
 
     async void LoadLeaderboard()
@@ -132,7 +142,7 @@ public class MainMenuUI : MonoBehaviour
             return;
         }
 
-        IndonesiaLeaderboardSnapshot snapshot = await client.GetTopAsync(100);
+        IndonesiaLeaderboardSnapshot snapshot = await client.GetTopAsync(100, leaderboardPeriod);
         if (statusText == null) return;
         StringBuilder builder = new StringBuilder();
         if (snapshot.myRank.HasValue) builder.AppendLine("YOUR RANK  #" + snapshot.myRank.Value);
