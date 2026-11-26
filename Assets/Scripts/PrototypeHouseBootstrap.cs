@@ -9,8 +9,9 @@ public class PrototypeHouseBootstrap : MonoBehaviour
     public bool buildOnStart = true;
     public float roomSize = 10f;
 
-    private Material floorMat, wallMat, furnitureMat, geckoMat, humanMat, coinMat;
+    private Material floorMat, wallMat, furnitureMat, geckoMat, coinMat;
     private Material eyeMat, pupilMat, humanSkinMat, shirtMat, pantsMat, hairMat;
+    private Material fabricMat, applianceMat, mattressMat, boxMat;
 
     void Start()
     {
@@ -30,7 +31,6 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         wallMat = MakeMaterial(new Color(0.78f, 0.75f, 0.68f));
         furnitureMat = MakeMaterial(new Color(0.28f, 0.19f, 0.13f));
         geckoMat = MakeMaterial(new Color(0.25f, 0.72f, 0.28f));
-        humanMat = MakeMaterial(new Color(0.2f, 0.24f, 0.3f));
         coinMat = MakeMaterial(new Color(1f, 0.72f, 0.08f));
         eyeMat = MakeMaterial(new Color(0.96f, 0.98f, 1f));
         pupilMat = MakeMaterial(new Color(0.025f, 0.035f, 0.04f));
@@ -38,6 +38,10 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         shirtMat = MakeMaterial(new Color(0.16f, 0.3f, 0.62f));
         pantsMat = MakeMaterial(new Color(0.12f, 0.15f, 0.2f));
         hairMat = MakeMaterial(new Color(0.08f, 0.055f, 0.04f));
+        fabricMat = MakeMaterial(new Color(0.22f, 0.3f, 0.38f));
+        applianceMat = MakeMaterial(new Color(0.72f, 0.76f, 0.78f));
+        mattressMat = MakeMaterial(new Color(0.83f, 0.82f, 0.75f));
+        boxMat = MakeMaterial(new Color(0.42f, 0.29f, 0.18f));
 
         BuildRoom("RUANG TAMU", new Vector3(0, 0, 0));
         BuildRoom("DAPUR", new Vector3(12, 0, 0));
@@ -177,6 +181,47 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         table.transform.position = center + new Vector3(-2.3f, 0.65f, -1.8f);
         table.transform.localScale = new Vector3(2.1f, 1.3f, 1.5f);
         table.GetComponent<Renderer>().material = furnitureMat;
+
+        BuildRoomProps(label, center);
+    }
+
+    void BuildRoomProps(string label, Vector3 center)
+    {
+        if (label == "RUANG TAMU")
+        {
+            CreateProp(label + " Sofa Base", center + new Vector3(-2.8f, 0.38f, 2.7f), new Vector3(3.2f, 0.75f, 1.1f), fabricMat);
+            CreateProp(label + " Sofa Back", center + new Vector3(-2.8f, 0.95f, 3.15f), new Vector3(3.2f, 0.75f, 0.25f), fabricMat);
+            CreateProp(label + " Sofa Arm L", center + new Vector3(-4.25f, 0.75f, 2.7f), new Vector3(0.3f, 0.75f, 1.1f), furnitureMat);
+            CreateProp(label + " Sofa Arm R", center + new Vector3(-1.35f, 0.75f, 2.7f), new Vector3(0.3f, 0.75f, 1.1f), furnitureMat);
+        }
+        else if (label == "DAPUR")
+        {
+            CreateProp(label + " Kitchen Counter", center + new Vector3(-2.8f, 0.62f, 2.8f), new Vector3(3.2f, 1.2f, 1.1f), applianceMat);
+            CreateProp(label + " Refrigerator", center + new Vector3(-3.6f, 1.15f, -2.8f), new Vector3(1.25f, 2.3f, 1.15f), applianceMat);
+            CreateProp(label + " Upper Cabinet", center + new Vector3(1.6f, 2.15f, 4.45f), new Vector3(2.2f, 0.8f, 0.55f), furnitureMat);
+        }
+        else if (label == "KAMAR")
+        {
+            CreateProp(label + " Bed Base", center + new Vector3(-2.7f, 0.32f, -2.7f), new Vector3(3.4f, 0.65f, 2.5f), furnitureMat);
+            CreateProp(label + " Mattress", center + new Vector3(-2.7f, 0.72f, -2.7f), new Vector3(3.25f, 0.22f, 2.35f), mattressMat);
+            CreateProp(label + " Pillow", center + new Vector3(-2.7f, 0.9f, -3.55f), new Vector3(1.05f, 0.2f, 0.55f), eyeMat);
+        }
+        else if (label == "GUDANG")
+        {
+            CreateProp(label + " Storage Box A", center + new Vector3(-3.2f, 0.5f, -2.8f), new Vector3(1.2f, 1f, 1.2f), boxMat);
+            CreateProp(label + " Storage Box B", center + new Vector3(-2.5f, 1.45f, -2.8f), new Vector3(1.1f, 0.85f, 1.1f), boxMat);
+            CreateProp(label + " Storage Box C", center + new Vector3(-0.9f, 0.4f, -3.1f), new Vector3(1.5f, 0.8f, 1.2f), boxMat);
+            CreateProp(label + " Metal Shelf", center + new Vector3(3.6f, 1.2f, -2.8f), new Vector3(0.35f, 2.4f, 3.2f), applianceMat);
+        }
+    }
+
+    void CreateProp(string name, Vector3 position, Vector3 scale, Material material)
+    {
+        GameObject prop = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        prop.name = name;
+        prop.transform.position = position;
+        prop.transform.localScale = scale;
+        prop.GetComponent<Renderer>().material = material;
     }
 
     void CreateCorridor(Vector3 position, Vector3 scale)
