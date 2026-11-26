@@ -59,6 +59,10 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         human.transform.position = new Vector3(-3, 1, -2);
         human.transform.localScale = new Vector3(0.9f, 1f, 0.9f);
         human.GetComponent<Renderer>().material = humanMat;
+        Destroy(human.GetComponent<CapsuleCollider>());
+        CharacterController humanMotor = human.AddComponent<CharacterController>();
+        humanMotor.height = 2f;
+        humanMotor.radius = 0.42f;
         HumanChaserAI ai = human.AddComponent<HumanChaserAI>();
         ai.target = player.transform;
 
