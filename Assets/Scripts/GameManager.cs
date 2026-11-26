@@ -48,6 +48,8 @@ public class GameManager : MonoBehaviour
     {
         if (amount <= 0) return;
         Coins += amount;
+        int lifetimeCoins = PlayerPrefs.GetInt("RUN_CICAAK_LIFETIME_COINS", 0) + amount;
+        PlayerPrefs.SetInt("RUN_CICAAK_LIFETIME_COINS", lifetimeCoins);
         PlayerPrefs.SetInt(CoinsKey, Coins);
         PlayerPrefs.Save();
     }
@@ -67,16 +69,27 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    public void EndRun()
+    public void EndRun() => FinishRun(false);
+
+    public void CompleteEscape() => FinishRun(true);
+
+    private void FinishRun(bool escaped)
     {
         if (RunEnded) return;
         RunEnded = true;
+
         int best = PlayerPrefs.GetInt("RUN_CICAAK_BEST", 0);
         if (Score > best)
             PlayerPrefs.SetInt("RUN_CICAAK_BEST", Score);
 
+        int lifetimeCoins = PlayerPrefs.GetInt("RUN_CICAAK_LIFETIME_COINS", 0);
+        int hideCount = PlayerPrefs.GetInt("RUN_CICAAK_HIDE_COUNT", 0);
+        AchievementManager.Instance?.CheckRunAchievements(
+            Score, SurvivalTime, lifetimeCoins, hideCount, escaped
+        );
+
         PlayerPrefs.Save();
-        Debug.Log("RUN CICAAK selesai. Score: " + Score + " | Waktu: " + SurvivalTime.ToString("F1") + "s");
+        Debug.Log("RUN CICAAK selesai. Score: " + Score + " | Waktu: " + SurvivalTime.ToString("F1") + "s | Escape: " + escaped);
     }
 
     public void RestartRun()
