@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 public class PrototypeHouseBootstrap : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
     public float roomSize = 10f;
 
     private Material floorMat, wallMat, furnitureMat, geckoMat, humanMat, coinMat;
+    private Material eyeMat, pupilMat, humanSkinMat, shirtMat, pantsMat, hairMat;
 
     void Start()
     {
@@ -30,6 +32,12 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         geckoMat = MakeMaterial(new Color(0.25f, 0.72f, 0.28f));
         humanMat = MakeMaterial(new Color(0.2f, 0.24f, 0.3f));
         coinMat = MakeMaterial(new Color(1f, 0.72f, 0.08f));
+        eyeMat = MakeMaterial(new Color(0.96f, 0.98f, 1f));
+        pupilMat = MakeMaterial(new Color(0.025f, 0.035f, 0.04f));
+        humanSkinMat = MakeMaterial(new Color(0.78f, 0.55f, 0.39f));
+        shirtMat = MakeMaterial(new Color(0.16f, 0.3f, 0.62f));
+        pantsMat = MakeMaterial(new Color(0.12f, 0.15f, 0.2f));
+        hairMat = MakeMaterial(new Color(0.08f, 0.055f, 0.04f));
 
         BuildRoom("RUANG TAMU", new Vector3(0, 0, 0));
         BuildRoom("DAPUR", new Vector3(12, 0, 0));
@@ -40,29 +48,27 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         CreateCorridor(new Vector3(0, -0.15f, 6), new Vector3(2.4f, 0.3f, 2.4f));
         CreateCorridor(new Vector3(12, -0.15f, 6), new Vector3(2.4f, 0.3f, 2.4f));
 
-        GameObject player = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-        player.name = "Gecko Player (Prototype)";
-        player.transform.position = new Vector3(0, 1, 0);
-        player.transform.localScale = new Vector3(0.55f, 0.45f, 0.55f);
-        Destroy(player.GetComponent<CapsuleCollider>());
-        player.AddComponent<CharacterController>();
-        player.AddComponent<PlayerController>();
+        GameObject player = new GameObject("Gecko Player (Prototype)");
+        player.transform.position = Vector3.zero;
+        CharacterController playerMotor = player.AddComponent<CharacterController>();
+        playerMotor.height = 1.1f;
+        playerMotor.radius = 0.34f;
+        playerMotor.center = new Vector3(0f, 0.55f, 0f);
+        PlayerController playerController = player.AddComponent<PlayerController>();
         player.AddComponent<CatchSequence>();
-        player.AddComponent<GeckoSkinApplier>();
-        player.GetComponent<Renderer>().material = geckoMat;
-        PlayerController playerController = player.GetComponent<PlayerController>();
+        GeckoSkinApplier skinApplier = player.AddComponent<GeckoSkinApplier>();
+        skinApplier.targetRenderers = BuildGeckoModel(player.transform);
+
         foreach (HidingSpot spot in FindObjectsOfType<HidingSpot>())
             spot.SetPlayer(playerController);
 
-        GameObject human = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-        human.name = "Human Chaser (Prototype)";
-        human.transform.position = new Vector3(16, 1, -3);
-        human.transform.localScale = new Vector3(0.9f, 1f, 0.9f);
-        human.GetComponent<Renderer>().material = humanMat;
-        Destroy(human.GetComponent<CapsuleCollider>());
+        GameObject human = new GameObject("Human Chaser (Prototype)");
+        human.transform.position = new Vector3(16, 0, -3);
         CharacterController humanMotor = human.AddComponent<CharacterController>();
         humanMotor.height = 2f;
         humanMotor.radius = 0.42f;
+        humanMotor.center = new Vector3(0f, 1f, 0f);
+        BuildHumanModel(human.transform);
         HumanChaserAI ai = human.AddComponent<HumanChaserAI>();
         ai.target = player.transform;
         ai.walkSpeed = 2.3f;
@@ -91,6 +97,55 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         Debug.Log("RUN CICAAK: Prototype blockout dibuat. Ganti primitive dengan model 3D final sebelum rilis.");
     }
 
+    Renderer[] BuildGeckoModel(Transform root)
+    {
+        List<Renderer> skinParts = new List<Renderer>();
+        skinParts.Add(CreatePart(root, "Gecko Body", PrimitiveType.Sphere, new Vector3(0, 0.43f, 0), new Vector3(0.58f, 0.34f, 0.82f), geckoMat));
+        skinParts.Add(CreatePart(root, "Gecko Head", PrimitiveType.Sphere, new Vector3(0, 0.62f, 0.48f), new Vector3(0.44f, 0.34f, 0.42f), geckoMat));
+        skinParts.Add(CreatePart(root, "Gecko Muzzle", PrimitiveType.Sphere, new Vector3(0, 0.53f, 0.72f), new Vector3(0.3f, 0.16f, 0.25f), geckoMat));
+
+        skinParts.Add(CreatePart(root, "Tail Base", PrimitiveType.Sphere, new Vector3(0, 0.36f, -0.48f), new Vector3(0.34f, 0.25f, 0.48f), geckoMat));
+        skinParts.Add(CreatePart(root, "Tail Mid", PrimitiveType.Sphere, new Vector3(0, 0.29f, -0.82f), new Vector3(0.24f, 0.18f, 0.42f), geckoMat));
+        skinParts.Add(CreatePart(root, "Tail Tip", PrimitiveType.Sphere, new Vector3(0, 0.22f, -1.13f), new Vector3(0.14f, 0.12f, 0.35f), geckoMat));
+
+        skinParts.Add(CreatePart(root, "Front Left Leg", PrimitiveType.Capsule, new Vector3(-0.29f, 0.22f, 0.34f), new Vector3(0.17f, 0.22f, 0.18f), geckoMat));
+        skinParts.Add(CreatePart(root, "Front Right Leg", PrimitiveType.Capsule, new Vector3(0.29f, 0.22f, 0.34f), new Vector3(0.17f, 0.22f, 0.18f), geckoMat));
+        skinParts.Add(CreatePart(root, "Back Left Leg", PrimitiveType.Capsule, new Vector3(-0.29f, 0.2f, -0.36f), new Vector3(0.18f, 0.23f, 0.19f), geckoMat));
+        skinParts.Add(CreatePart(root, "Back Right Leg", PrimitiveType.Capsule, new Vector3(0.29f, 0.2f, -0.36f), new Vector3(0.18f, 0.23f, 0.19f), geckoMat));
+
+        CreatePart(root, "Left Eye", PrimitiveType.Sphere, new Vector3(-0.16f, 0.78f, 0.65f), new Vector3(0.14f, 0.15f, 0.12f), eyeMat);
+        CreatePart(root, "Right Eye", PrimitiveType.Sphere, new Vector3(0.16f, 0.78f, 0.65f), new Vector3(0.14f, 0.15f, 0.12f), eyeMat);
+        CreatePart(root, "Left Pupil", PrimitiveType.Sphere, new Vector3(-0.16f, 0.78f, 0.75f), new Vector3(0.065f, 0.075f, 0.055f), pupilMat);
+        CreatePart(root, "Right Pupil", PrimitiveType.Sphere, new Vector3(0.16f, 0.78f, 0.75f), new Vector3(0.065f, 0.075f, 0.055f), pupilMat);
+
+        return skinParts.ToArray();
+    }
+
+    void BuildHumanModel(Transform root)
+    {
+        CreatePart(root, "Human Torso", PrimitiveType.Capsule, new Vector3(0, 1.15f, 0), new Vector3(0.42f, 0.48f, 0.3f), shirtMat);
+        CreatePart(root, "Human Head", PrimitiveType.Sphere, new Vector3(0, 1.95f, 0), new Vector3(0.38f, 0.4f, 0.36f), humanSkinMat);
+        CreatePart(root, "Human Hair", PrimitiveType.Sphere, new Vector3(0, 2.12f, -0.02f), new Vector3(0.39f, 0.2f, 0.37f), hairMat);
+        CreatePart(root, "Human Left Arm", PrimitiveType.Capsule, new Vector3(-0.49f, 1.2f, 0), new Vector3(0.18f, 0.43f, 0.18f), humanSkinMat);
+        CreatePart(root, "Human Right Arm", PrimitiveType.Capsule, new Vector3(0.49f, 1.2f, 0), new Vector3(0.18f, 0.43f, 0.18f), humanSkinMat);
+        CreatePart(root, "Human Left Leg", PrimitiveType.Capsule, new Vector3(-0.2f, 0.43f, 0), new Vector3(0.2f, 0.4f, 0.22f), pantsMat);
+        CreatePart(root, "Human Right Leg", PrimitiveType.Capsule, new Vector3(0.2f, 0.43f, 0), new Vector3(0.2f, 0.4f, 0.22f), pantsMat);
+    }
+
+    Renderer CreatePart(Transform parent, string partName, PrimitiveType primitive, Vector3 localPosition, Vector3 localScale, Material material)
+    {
+        GameObject part = GameObject.CreatePrimitive(primitive);
+        part.name = partName;
+        part.transform.SetParent(parent, false);
+        part.transform.localPosition = localPosition;
+        part.transform.localScale = localScale;
+        Collider partCollider = part.GetComponent<Collider>();
+        if (partCollider != null) Destroy(partCollider);
+        Renderer renderer = part.GetComponent<Renderer>();
+        renderer.material = material;
+        return renderer;
+    }
+
     void BuildRoom(string label, Vector3 center)
     {
         GameObject floor = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -112,7 +167,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         cabinet.GetComponent<Renderer>().material = furnitureMat;
 
         GameObject hideAnchor = new GameObject("Hide Position");
-        hideAnchor.transform.position = furniturePosition + new Vector3(-1.1f, -0.3f, 0);
+        hideAnchor.transform.position = new Vector3(furniturePosition.x - 1.1f, 0f, furniturePosition.z);
         HidingSpot hiding = cabinet.AddComponent<HidingSpot>();
         hiding.hidePosition = hideAnchor.transform;
         hiding.interactDistance = 2.5f;
