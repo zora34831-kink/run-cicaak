@@ -62,6 +62,17 @@ public class FirebaseLeaderboardClient : MonoBehaviour
         }
     }
 
+    public async Task<bool> SubmitRunWhenReadyAsync(int score, float survivalSeconds, string displayName, string avatarId)
+    {
+        float waited = 0f;
+        while (!IsReady && waited < 20f)
+        {
+            await Task.Delay(250);
+            waited += 0.25f;
+        }
+        return await SubmitRunAsync(score, survivalSeconds, displayName, avatarId);
+    }
+
     public async Task<IndonesiaLeaderboardSnapshot> GetTopAsync(int limit = 100)
     {
         if (!IsReady || functions == null) return new IndonesiaLeaderboardSnapshot();
@@ -122,6 +133,9 @@ public class FirebaseLeaderboardClient : MonoBehaviour
     }
 
     public Task<bool> SubmitRunAsync(int score, float survivalSeconds, string displayName, string avatarId) =>
+        Task.FromResult(false);
+
+    public Task<bool> SubmitRunWhenReadyAsync(int score, float survivalSeconds, string displayName, string avatarId) =>
         Task.FromResult(false);
 
     public Task<IndonesiaLeaderboardSnapshot> GetTopAsync(int limit = 100) =>
