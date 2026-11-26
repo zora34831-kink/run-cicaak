@@ -7,6 +7,24 @@
         { "fieldPath": "score", "order": "DESCENDING" },
         { "fieldPath": "updatedAt", "order": "ASCENDING" }
       ]
+    },
+    {
+      "collectionGroup": "leaderboardIndonesiaWeekly",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "bucket", "order": "ASCENDING" },
+        { "fieldPath": "score", "order": "DESCENDING" },
+        { "fieldPath": "updatedAt", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "leaderboardIndonesiaMonthly",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "bucket", "order": "ASCENDING" },
+        { "fieldPath": "score", "order": "DESCENDING" },
+        { "fieldPath": "updatedAt", "order": "ASCENDING" }
+      ]
     }
   ],
   "fieldOverrides": []
