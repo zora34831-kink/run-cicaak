@@ -338,6 +338,27 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         binder.timerText = AddHudText(hud.transform, "TIME", new Vector2(0.02f, 0.85f));
         binder.bestText = AddHudText(hud.transform, "BEST", new Vector2(0.02f, 0.80f));
         binder.levelText = AddHudText(hud.transform, "LEVEL", new Vector2(0.88f, 0.95f));
+        CreateGameplayHint(canvasObject.transform);
+    }
+
+    void CreateGameplayHint(Transform parent)
+    {
+        GameObject go = new GameObject("Gameplay Hint", typeof(RectTransform), typeof(Text));
+        go.transform.SetParent(parent, false);
+        RectTransform rect = go.GetComponent<RectTransform>();
+        rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0.88f);
+        rect.pivot = new Vector2(0.5f, 0.5f);
+        rect.anchoredPosition = Vector2.zero;
+        rect.sizeDelta = new Vector2(1100, 58);
+
+        Text text = go.GetComponent<Text>();
+        text.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+        text.fontSize = 24;
+        text.alignment = TextAnchor.MiddleCenter;
+        text.color = new Color(1f, 1f, 1f, 0.95f);
+        text.text = "KUMPULKAN KOIN   •   HINDARI MANUSIA   •   CARI JALAN KELUAR";
+        text.raycastTarget = false;
+        go.AddComponent<GameplayHint>();
     }
 
     RectTransform MakePanel(Transform parent, string name, Vector2 anchorMin, Vector2 anchorMax, Vector2 size, Color color)
