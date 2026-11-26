@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     public int Coins { get; private set; }
     public float SurvivalTime { get; private set; }
     public bool RunEnded { get; private set; }
+    public bool Escaped { get; private set; }
+    public event System.Action<bool> RunFinished;
 
     private float scoreAccumulator;
     private float xpAccumulator;
@@ -77,6 +79,7 @@ public class GameManager : MonoBehaviour
     {
         if (RunEnded) return;
         RunEnded = true;
+        Escaped = escaped;
 
         int best = PlayerPrefs.GetInt("RUN_CICAAK_BEST", 0);
         if (Score > best)
@@ -90,6 +93,7 @@ public class GameManager : MonoBehaviour
 
         PlayerPrefs.Save();
         Debug.Log("RUN CICAAK selesai. Score: " + Score + " | Waktu: " + SurvivalTime.ToString("F1") + "s | Escape: " + escaped);
+        RunFinished?.Invoke(escaped);
     }
 
     public void RestartRun()
