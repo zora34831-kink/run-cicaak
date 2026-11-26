@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 
 public class MobileActionButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    public enum ActionType { Sprint, Jump, Hide }
+    public enum ActionType { Sprint, Jump, Hide, Pause }
     public ActionType actionType;
     public PlayerController player;
     public HidingSpot nearbyHidingSpot;
@@ -27,6 +27,9 @@ public class MobileActionButton : MonoBehaviour, IPointerDownHandler, IPointerUp
                 break;
             case ActionType.Jump:
                 player.RequestJump();
+                break;
+            case ActionType.Pause:
+                PauseMenuController.Instance?.Toggle();
                 break;
             case ActionType.Hide:
                 if (player.IsHidden)
