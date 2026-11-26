@@ -47,6 +47,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         Destroy(player.GetComponent<CapsuleCollider>());
         player.AddComponent<CharacterController>();
         player.AddComponent<PlayerController>();
+        player.AddComponent<CatchSequence>();
         player.AddComponent<GeckoSkinApplier>();
         player.GetComponent<Renderer>().material = geckoMat;
         PlayerController playerController = player.GetComponent<PlayerController>();
