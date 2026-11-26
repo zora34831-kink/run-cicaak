@@ -23,7 +23,7 @@ The scene generator creates:
 
 ## Test controls
 
-The generated game scene creates a touch joystick and SPRINT, JUMP, and HIDE buttons. In the Unity Editor, keyboard controls are also available:
+The generated game scene creates a touch joystick and SPRINT, JUMP, HIDE, and PAUSE buttons. In the Unity Editor, keyboard controls are also available:
 - WASD / arrow keys: move
 - Left Shift: sprint
 - Space: jump
