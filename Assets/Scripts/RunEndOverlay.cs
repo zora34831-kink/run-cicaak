@@ -60,6 +60,7 @@ public class RunEndOverlay : MonoBehaviour
             detailText.text = "SCORE  " + (game != null ? game.Score.ToString("N0") : "0") +
                               "\nTIME  " + (game != null ? game.SurvivalTime.ToString("F1") : "0") + "s";
         }
+        panel.transform.SetAsLastSibling();
         panel.SetActive(true);
     }
 
