@@ -7,6 +7,7 @@ public class MainMenuUI : MonoBehaviour
     private Canvas canvas;
     private RectTransform page;
     private Text statusText;
+    private RectTransform leaderboardContent;
     private MainMenuController navigation;
     private string leaderboardPeriod = "all";
 
@@ -120,7 +121,8 @@ public class MainMenuUI : MonoBehaviour
         CreateButton(page, "ALL TIME", new Vector2(-300, 330), new Vector2(280, 62), () => SetLeaderboardPeriod("all"));
         CreateButton(page, "WEEKLY", new Vector2(0, 330), new Vector2(280, 62), () => SetLeaderboardPeriod("weekly"));
         CreateButton(page, "MONTHLY", new Vector2(300, 330), new Vector2(280, 62), () => SetLeaderboardPeriod("monthly"));
-        statusText = CreateText(page, "Loading leaderboard...", 20, new Vector2(0, -5), new Vector2(1000, 650), TextAnchor.UpperCenter);
+        statusText = CreateLeaderboardScroll();
+        statusText.text = "Loading leaderboard...";
         CreateButton(page, "REFRESH", new Vector2(-130, -420), new Vector2(360, 68), LoadLeaderboard);
         CreateButton(page, "BACK", new Vector2(230, -420), new Vector2(360, 68), ShowHome);
         LoadLeaderboard();
@@ -150,6 +152,71 @@ public class MainMenuUI : MonoBehaviour
         foreach (IndonesiaLeaderboardEntry entry in snapshot.entries)
             builder.AppendLine(entry.rank + ".  " + entry.displayName + "   " + entry.score.ToString("N0"));
         statusText.text = builder.Length > 0 ? builder.ToString() : "Belum ada skor. Jadilah yang pertama!";
+        if (leaderboardContent != null)
+        {
+            float contentHeight = Mathf.Max(600f, snapshot.entries.Length * 36f + 120f);
+            leaderboardContent.sizeDelta = new Vector2(0f, contentHeight);
+            RectTransform textRect = statusText.GetComponent<RectTransform>();
+            textRect.sizeDelta = new Vector2(950f, contentHeight);
+        }
+    }
+
+    Text CreateLeaderboardScroll()
+    {
+        GameObject scrollObject = new GameObject("Leaderboard Scroll", typeof(RectTransform), typeof(Image), typeof(Mask), typeof(ScrollRect));
+        scrollObject.transform.SetParent(page, false);
+        RectTransform scrollRect = scrollObject.GetComponent<RectTransform>();
+        scrollRect.anchorMin = scrollRect.anchorMax = new Vector2(0.5f, 0.5f);
+        scrollRect.pivot = new Vector2(0.5f, 0.5f);
+        scrollRect.anchoredPosition = new Vector2(0, -5);
+        scrollRect.sizeDelta = new Vector2(1000, 650);
+        scrollObject.GetComponent<Image>().color = new Color(0.04f, 0.06f, 0.08f, 0.5f);
+        scrollObject.GetComponent<Mask>().showMaskGraphic = false;
+
+        GameObject viewport = new GameObject("Viewport", typeof(RectTransform), typeof(Image), typeof(Mask));
+        viewport.transform.SetParent(scrollObject.transform, false);
+        RectTransform viewportRect = viewport.GetComponent<RectTransform>();
+        viewportRect.anchorMin = Vector2.zero;
+        viewportRect.anchorMax = Vector2.one;
+        viewportRect.offsetMin = viewportRect.offsetMax = Vector2.zero;
+        viewport.GetComponent<Image>().color = Color.white;
+        viewport.GetComponent<Mask>().showMaskGraphic = false;
+
+        GameObject contentObject = new GameObject("Content", typeof(RectTransform));
+        contentObject.transform.SetParent(viewport.transform, false);
+        leaderboardContent = contentObject.GetComponent<RectTransform>();
+        leaderboardContent.anchorMin = new Vector2(0, 1);
+        leaderboardContent.anchorMax = new Vector2(1, 1);
+        leaderboardContent.pivot = new Vector2(0.5f, 1);
+        leaderboardContent.anchoredPosition = Vector2.zero;
+        leaderboardContent.sizeDelta = new Vector2(0, 650);
+
+        GameObject textObject = new GameObject("Leaderboard Text", typeof(RectTransform), typeof(Text));
+        textObject.transform.SetParent(contentObject.transform, false);
+        RectTransform textRect = textObject.GetComponent<RectTransform>();
+        textRect.anchorMin = new Vector2(0.5f, 1);
+        textRect.anchorMax = new Vector2(0.5f, 1);
+        textRect.pivot = new Vector2(0.5f, 1);
+        textRect.anchoredPosition = new Vector2(0, -12);
+        textRect.sizeDelta = new Vector2(950, 650);
+
+        Text text = textObject.GetComponent<Text>();
+        text.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+        text.fontSize = 20;
+        text.alignment = TextAnchor.UpperCenter;
+        text.color = Color.white;
+        text.horizontalOverflow = HorizontalWrapMode.Wrap;
+        text.verticalOverflow = VerticalWrapMode.Overflow;
+        text.raycastTarget = false;
+
+        ScrollRect scroll = scrollObject.GetComponent<ScrollRect>();
+        scroll.viewport = viewportRect;
+        scroll.content = leaderboardContent;
+        scroll.horizontal = false;
+        scroll.vertical = true;
+        scroll.movementType = ScrollRect.MovementType.Clamped;
+        scroll.scrollSensitivity = 35f;
+        return text;
     }
 
     void ShowAchievements()
@@ -237,6 +304,7 @@ public class MainMenuUI : MonoBehaviour
         page.anchorMax = Vector2.one;
         page.offsetMin = page.offsetMax = Vector2.zero;
         statusText = null;
+        leaderboardContent = null;
     }
 
     Text CreateText(Transform parent, string value, int size, Vector2 position, Vector2 dimensions, TextAnchor alignment)
