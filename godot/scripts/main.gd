@@ -206,7 +206,7 @@ func _build_hud() -> void:
 	hide_button = _make_button(layer, "HIDE", Vector2(790, 345), Vector2(145, 64))
 	hide_button.pressed.connect(_toggle_hide)
 
-func _make_button(parent: Control, text_value: String, pos: Vector2, size: Vector2) -> Button:
+func _make_button(parent: Node, text_value: String, pos: Vector2, size: Vector2) -> Button:
 	var button := Button.new()
 	button.text = text_value
 	button.position = pos
