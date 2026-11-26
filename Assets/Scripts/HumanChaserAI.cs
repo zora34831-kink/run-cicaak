@@ -15,6 +15,8 @@ public class HumanChaserAI : MonoBehaviour
     private Vector3 verticalVelocity;
     private float searchTimer;
 
+    public bool IsMoving { get; private set; }
+
     void Awake()
     {
         motor = GetComponent<CharacterController>();
@@ -27,6 +29,7 @@ public class HumanChaserAI : MonoBehaviour
 
     void Update()
     {
+        IsMoving = false;
         if (target == null || player == null || player.IsCaught ||
             (GameManager.Instance != null && GameManager.Instance.RunEnded)) return;
 
@@ -53,6 +56,7 @@ public class HumanChaserAI : MonoBehaviour
 
         if (movementDirection.sqrMagnitude > 0.01f)
         {
+            IsMoving = true;
             Quaternion desiredRotation = Quaternion.LookRotation(movementDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, 7f * Time.deltaTime);
         }
