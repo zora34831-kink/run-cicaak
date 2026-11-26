@@ -313,6 +313,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         Canvas canvas = canvasObject.GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvasObject.AddComponent<RunEndOverlay>();
+        canvasObject.AddComponent<PauseMenuController>();
         CanvasScaler scaler = canvasObject.GetComponent<CanvasScaler>();
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         scaler.referenceResolution = new Vector2(1920, 1080);
@@ -327,6 +328,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         CreateActionButton(canvasObject.transform, "SPRINT", MobileActionButton.ActionType.Sprint, new Vector2(0.88f, 0.18f), player);
         CreateActionButton(canvasObject.transform, "JUMP", MobileActionButton.ActionType.Jump, new Vector2(0.92f, 0.34f), player);
         CreateActionButton(canvasObject.transform, "HIDE", MobileActionButton.ActionType.Hide, new Vector2(0.78f, 0.28f), player);
+        CreateActionButton(canvasObject.transform, "PAUSE", MobileActionButton.ActionType.Pause, new Vector2(0.96f, 0.91f), player);
 
         GameObject hud = new GameObject("HUD");
         hud.transform.SetParent(canvasObject.transform, false);
