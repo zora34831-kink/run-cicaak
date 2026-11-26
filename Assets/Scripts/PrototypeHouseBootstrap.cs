@@ -63,6 +63,20 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         GeckoSkinApplier skinApplier = player.AddComponent<GeckoSkinApplier>();
         skinApplier.targetRenderers = BuildGeckoModel(player.transform);
 
+        GeckoProceduralAnimation geckoAnimation = player.AddComponent<GeckoProceduralAnimation>();
+        geckoAnimation.player = playerController;
+        geckoAnimation.body = player.transform.Find("Gecko Body");
+        geckoAnimation.frontLeftLeg = player.transform.Find("Front Left Leg");
+        geckoAnimation.frontRightLeg = player.transform.Find("Front Right Leg");
+        geckoAnimation.backLeftLeg = player.transform.Find("Back Left Leg");
+        geckoAnimation.backRightLeg = player.transform.Find("Back Right Leg");
+        geckoAnimation.tailSegments = new Transform[]
+        {
+            player.transform.Find("Tail Base"),
+            player.transform.Find("Tail Mid"),
+            player.transform.Find("Tail Tip")
+        };
+
         foreach (HidingSpot spot in FindObjectsOfType<HidingSpot>())
             spot.SetPlayer(playerController);
 
@@ -76,6 +90,12 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         HumanChaserAI ai = human.AddComponent<HumanChaserAI>();
         ai.target = player.transform;
         ai.walkSpeed = 2.3f;
+
+        HumanProceduralAnimation humanAnimation = human.AddComponent<HumanProceduralAnimation>();
+        humanAnimation.chaser = ai;
+        humanAnimation.leftArm = human.transform.Find("Human Left Arm");
+        humanAnimation.rightArm = human.transform.Find("Human Right Arm");
+        humanAnimation.torso = human.transform.Find("Human Torso");
 
         GameObject cameraObject = Camera.main != null ? Camera.main.gameObject : new GameObject("Main Camera");
         cameraObject.tag = "MainCamera";
