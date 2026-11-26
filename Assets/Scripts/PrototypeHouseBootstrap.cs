@@ -56,7 +56,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
 
         GameObject human = GameObject.CreatePrimitive(PrimitiveType.Capsule);
         human.name = "Human Chaser (Prototype)";
-        human.transform.position = new Vector3(-3, 1, -2);
+        human.transform.position = new Vector3(16, 1, -3);
         human.transform.localScale = new Vector3(0.9f, 1f, 0.9f);
         human.GetComponent<Renderer>().material = humanMat;
         Destroy(human.GetComponent<CapsuleCollider>());
@@ -65,6 +65,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         humanMotor.radius = 0.42f;
         HumanChaserAI ai = human.AddComponent<HumanChaserAI>();
         ai.target = player.transform;
+        ai.walkSpeed = 2.3f;
 
         GameObject cameraObject = Camera.main != null ? Camera.main.gameObject : new GameObject("Main Camera");
         cameraObject.tag = "MainCamera";
