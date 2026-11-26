@@ -4,15 +4,20 @@ public class HidingSpot : MonoBehaviour
 {
     public Transform hidePosition;
     public float interactDistance = 2.2f;
-
     private PlayerController player;
+
+    void Awake()
+    {
+        if (player == null) player = FindObjectOfType<PlayerController>();
+    }
 
     void Update()
     {
         if (player == null || player.IsCaught) return;
-
 #if UNITY_EDITOR || UNITY_STANDALONE
-        if (Input.GetKeyDown(KeyCode.E)) ToggleHide();
+        if (Input.GetKeyDown(KeyCode.E) &&
+            Vector3.Distance(player.transform.position, transform.position) <= interactDistance)
+            ToggleHide();
 #endif
     }
 
@@ -20,7 +25,7 @@ public class HidingSpot : MonoBehaviour
 
     public void ToggleHide()
     {
-        if (player == null) return;
+        if (player == null || player.IsCaught) return;
 
         if (!player.IsHidden)
         {
@@ -28,7 +33,12 @@ public class HidingSpot : MonoBehaviour
                 return;
 
             if (hidePosition != null)
+            {
+                CharacterController controller = player.GetComponent<CharacterController>();
+                if (controller != null) controller.enabled = false;
                 player.transform.position = hidePosition.position;
+                if (controller != null) controller.enabled = true;
+            }
 
             player.SetHidden(true);
             GameManager.Instance?.RegisterHide();
