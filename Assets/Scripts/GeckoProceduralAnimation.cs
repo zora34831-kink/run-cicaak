@@ -20,7 +20,7 @@ public class GeckoProceduralAnimation : MonoBehaviour
     private Quaternion frontLeftStart, frontRightStart, backLeftStart, backRightStart;
     private Quaternion[] tailStartRotations;
 
-    void Awake()
+    void Start()
     {
         if (player == null) player = GetComponent<PlayerController>();
         if (body != null) bodyStartPosition = body.localPosition;
