@@ -1,0 +1,59 @@
+name: RUN CICAAK Godot Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "godot/**"
+      - ".github/workflows/godot-android.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  export-android:
+    name: Export Godot Android APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        run: |
+          sdkmanager --install "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+          yes | sdkmanager --licenses
+
+      - name: Setup Godot
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.4.1
+          use-dotnet: false
+          include-templates: true
+
+      - name: Verify Godot project
+        run: godot --headless --path godot --editor --quit
+
+      - name: Export Android APK
+        run: |
+          mkdir -p build
+          godot --headless --path godot --export-debug "Android" build/RUN-CICAAK.apk
+          test -s build/RUN-CICAAK.apk
+          unzip -t build/RUN-CICAAK.apk
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: RUN-CICAAK-Godot-Android-APK
+          path: build/RUN-CICAAK.apk
+          if-no-files-found: error
+          retention-days: 14
