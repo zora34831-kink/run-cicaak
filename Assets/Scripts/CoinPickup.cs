@@ -32,6 +32,7 @@ public class CoinPickup : MonoBehaviour
         collected = true;
         GameManager.Instance?.AddCoins(coinValue);
         ProgressionManager.Instance?.AddXP(xpValue);
+        RunCicaakAudio.PlayCoin();
         Destroy(gameObject);
     }
 }
