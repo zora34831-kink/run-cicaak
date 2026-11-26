@@ -34,13 +34,7 @@ public class MobileActionButton : MonoBehaviour, IPointerDownHandler, IPointerUp
             case ActionType.Hide:
                 if (player.IsHidden)
                 {
-                    HidingSpot[] allSpots = FindObjectsOfType<HidingSpot>();
-                    foreach (HidingSpot spot in allSpots)
-                    {
-                        spot.SetPlayer(player);
-                        spot.ToggleHide();
-                        break;
-                    }
+                    HidingSpot.ExitCurrentHide(player);
                 }
                 else
                 {
