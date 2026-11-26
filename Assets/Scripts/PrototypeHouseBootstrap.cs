@@ -328,7 +328,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         CreateActionButton(canvasObject.transform, "SPRINT", MobileActionButton.ActionType.Sprint, new Vector2(0.88f, 0.18f), player);
         CreateActionButton(canvasObject.transform, "JUMP", MobileActionButton.ActionType.Jump, new Vector2(0.92f, 0.34f), player);
         CreateActionButton(canvasObject.transform, "HIDE", MobileActionButton.ActionType.Hide, new Vector2(0.78f, 0.28f), player);
-        CreateActionButton(canvasObject.transform, "PAUSE", MobileActionButton.ActionType.Pause, new Vector2(0.96f, 0.91f), player);
+        CreateActionButton(canvasObject.transform, "PAUSE", MobileActionButton.ActionType.Pause, new Vector2(0.96f, 0.78f), player);
 
         GameObject hud = new GameObject("HUD");
         hud.transform.SetParent(canvasObject.transform, false);
@@ -383,7 +383,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         rect.anchorMin = rect.anchorMax = anchor;
         rect.pivot = new Vector2(0, 0.5f);
         rect.anchoredPosition = Vector2.zero;
-        rect.sizeDelta = new Vector2(360, 48);
+        rect.sizeDelta = new Vector2(label == "LEVEL" ? 220 : 360, 48);
         Text text = go.GetComponent<Text>();
         text.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
         text.fontSize = 28;
