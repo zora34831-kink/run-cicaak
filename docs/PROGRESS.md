@@ -40,3 +40,6 @@
 The repository is a playable-prototype codebase and build scaffold. It is not yet a verified APK or a finished production game. The checklist must be updated only after each item is actually completed and tested.
 
 - [x] Runtime prototype uses shared materials to reduce duplicate material instances; mobile target frame rate capped at 60 FPS with lightweight shadow settings
+
+- [x] Chase balance adjusted: the human walks faster than the gecko's normal movement, while sprinting remains a way to create distance
+- [x] Gameplay HUD now displays the player's XP progress alongside level
