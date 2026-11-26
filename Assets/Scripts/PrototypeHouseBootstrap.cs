@@ -404,7 +404,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         go.transform.SetParent(parent, false);
         RectTransform rect = go.GetComponent<RectTransform>();
         rect.anchorMin = rect.anchorMax = anchor;
-        rect.pivot = new Vector2(0, 0.5f);
+        rect.pivot = (label == "LEVEL" || label == "XP") ? new Vector2(1, 0.5f) : new Vector2(0, 0.5f);
         rect.anchoredPosition = Vector2.zero;
         rect.sizeDelta = new Vector2(label == "LEVEL" ? 220 : 360, 48);
         Text text = go.GetComponent<Text>();
