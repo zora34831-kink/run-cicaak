@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     [Header("State")]
     public bool IsHidden { get; private set; }
     public bool IsCaught { get; private set; }
+    public float MoveAmount => moveInput.magnitude;
+    public bool IsSprinting => sprinting;
 
     private CharacterController controller;
     private Vector2 moveInput;
