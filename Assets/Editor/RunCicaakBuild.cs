@@ -56,6 +56,7 @@ public static class RunCicaakBuild
         PlayerSettings.Android.bundleVersionCode = 1;
         PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel26;
         PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
+        PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.IL2CPP);
         PlayerSettings.defaultInterfaceOrientation = UIOrientation.LandscapeLeft;
         EditorUserBuildSettings.buildAppBundle = false;
 
