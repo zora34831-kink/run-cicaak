@@ -35,6 +35,10 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         BuildRoom("DAPUR", new Vector3(12, 0, 0));
         BuildRoom("KAMAR", new Vector3(0, 0, 12));
         BuildRoom("GUDANG", new Vector3(12, 0, 12));
+        CreateCorridor(new Vector3(6, -0.15f, 0), new Vector3(2.4f, 0.3f, 2.4f));
+        CreateCorridor(new Vector3(6, -0.15f, 12), new Vector3(2.4f, 0.3f, 2.4f));
+        CreateCorridor(new Vector3(0, -0.15f, 6), new Vector3(2.4f, 0.3f, 2.4f));
+        CreateCorridor(new Vector3(12, -0.15f, 6), new Vector3(2.4f, 0.3f, 2.4f));
 
         GameObject player = GameObject.CreatePrimitive(PrimitiveType.Capsule);
         player.name = "Gecko Player (Prototype)";
@@ -45,6 +49,9 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         player.AddComponent<PlayerController>();
         player.AddComponent<GeckoSkinApplier>();
         player.GetComponent<Renderer>().material = geckoMat;
+        PlayerController playerController = player.GetComponent<PlayerController>();
+        foreach (HidingSpot spot in FindObjectsOfType<HidingSpot>())
+            spot.SetPlayer(playerController);
 
         GameObject human = GameObject.CreatePrimitive(PrimitiveType.Capsule);
         human.name = "Human Chaser (Prototype)";
@@ -70,8 +77,9 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         CreateCoins(new Vector3(15, 0.7f, 2));
         CreateCoins(new Vector3(2, 0.7f, 14));
         CreateCoins(new Vector3(14, 0.7f, 14));
+        CreateEscapeExit(new Vector3(16, 0.1f, 16));
 
-        BuildTouchUI(player.GetComponent<PlayerController>());
+        BuildTouchUI(playerController);
         CreateLighting();
         Debug.Log("RUN CICAAK: Prototype blockout dibuat. Ganti primitive dengan model 3D final sebelum rilis.");
     }
@@ -107,6 +115,25 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         table.transform.position = center + new Vector3(-2.3f, 0.65f, -1.8f);
         table.transform.localScale = new Vector3(2.1f, 1.3f, 1.5f);
         table.GetComponent<Renderer>().material = furnitureMat;
+    }
+
+    void CreateCorridor(Vector3 position, Vector3 scale)
+    {
+        GameObject corridor = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        corridor.name = "Room Connector Floor";
+        corridor.transform.position = position;
+        corridor.transform.localScale = scale;
+        corridor.GetComponent<Renderer>().material = floorMat;
+    }
+
+    void CreateEscapeExit(Vector3 position)
+    {
+        GameObject exit = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        exit.name = "Escape Exit";
+        exit.transform.position = position;
+        exit.transform.localScale = new Vector3(1.8f, 0.12f, 1.8f);
+        exit.GetComponent<Renderer>().material = coinMat;
+        exit.AddComponent<EscapeZone>();
     }
 
     void CreateWallWithOpening(string label, Vector3 center, bool horizontal, float edgeOffset, float openingWidth)
@@ -163,7 +190,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         scaler.referenceResolution = new Vector2(1920, 1080);
 
-        RectTransform joystick = MakePanel(canvasObject.transform, "Joystick Base", new Vector2(0, 0), new Vector2(0.16f, 0.18f), new Vector2(180, 180), new Color(1, 1, 1, 0.22f));
+        RectTransform joystick = MakePanel(canvasObject.transform, "Joystick Base", new Vector2(0.15f, 0.18f), new Vector2(0.15f, 0.18f), new Vector2(180, 180), new Color(1, 1, 1, 0.22f));
         RectTransform handle = MakePanel(joystick, "Joystick Handle", new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(78, 78), new Color(1, 1, 1, 0.72f));
         MobileJoystick stick = joystick.gameObject.AddComponent<MobileJoystick>();
         stick.background = joystick;
@@ -176,11 +203,12 @@ public class PrototypeHouseBootstrap : MonoBehaviour
 
         GameObject hud = new GameObject("HUD");
         hud.transform.SetParent(canvasObject.transform, false);
-        AddHudText(hud.transform, "SCORE", new Vector2(0.02f, 0.95f));
-        AddHudText(hud.transform, "COINS", new Vector2(0.02f, 0.90f));
-        AddHudText(hud.transform, "TIME", new Vector2(0.02f, 0.85f));
-        AddHudText(hud.transform, "BEST", new Vector2(0.02f, 0.80f));
-        AddHudText(hud.transform, "LEVEL", new Vector2(0.88f, 0.95f));
+        RunHUD binder = hud.AddComponent<RunHUD>();
+        binder.scoreText = AddHudText(hud.transform, "SCORE", new Vector2(0.02f, 0.95f));
+        binder.coinText = AddHudText(hud.transform, "COINS", new Vector2(0.02f, 0.90f));
+        binder.timerText = AddHudText(hud.transform, "TIME", new Vector2(0.02f, 0.85f));
+        binder.bestText = AddHudText(hud.transform, "BEST", new Vector2(0.02f, 0.80f));
+        binder.levelText = AddHudText(hud.transform, "LEVEL", new Vector2(0.88f, 0.95f));
     }
 
     RectTransform MakePanel(Transform parent, string name, Vector2 anchorMin, Vector2 anchorMax, Vector2 size, Color color)
@@ -218,7 +246,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         text.raycastTarget = false;
     }
 
-    void AddHudText(Transform parent, string label, Vector2 anchor)
+    Text AddHudText(Transform parent, string label, Vector2 anchor)
     {
         GameObject go = new GameObject(label + " Text", typeof(RectTransform), typeof(Text));
         go.transform.SetParent(parent, false);
@@ -233,6 +261,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         text.color = Color.white;
         text.text = label;
         text.raycastTarget = false;
+        return text;
     }
 
     void CreateLighting()
