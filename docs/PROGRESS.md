@@ -13,7 +13,7 @@
 - [x] Gecko skin shop and selection
 - [x] Main menu, settings, nickname field, achievement page and leaderboard page
 - [x] Local achievement checks
-- [x] Firebase Functions backend for Indonesia leaderboard
+- [x] Firebase Functions backend for Indonesia all-time, weekly, and monthly leaderboards
 - [x] Optional Firebase Unity client adapter
 - [x] Unity scene generator and Android APK build script
 - [x] Manual GitHub Actions Android APK workflow
