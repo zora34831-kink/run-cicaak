@@ -3,7 +3,7 @@
 ## Implemented in repository
 
 - [x] Player movement, jump, sprint, and camera-relative controls
-- [x] Android touch joystick and action buttons
+- [x] Android touch joystick, action buttons, and pause menu
 - [x] Four-room procedural house blockout with connecting floor sections
 - [x] Basic hiding spots and hide/exit interaction
 - [x] Human chase prototype with basic obstacle steering
