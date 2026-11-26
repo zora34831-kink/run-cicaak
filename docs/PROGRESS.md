@@ -11,6 +11,7 @@
 - [x] Human chase prototype with basic obstacle steering
 - [x] Procedural gecko leg/tail motion and human walk animation
 - [x] Cartoon catch launch sequence
+- [x] Generated coin pickup, escape success, and caught sound effects (temporary synthesized SFX; final audio pack still needed)
 - [x] Escape zone and run result overlay
 - [x] Coins, score, survival timer, local best score, XP and levels
 - [x] Gecko skin shop and selection
