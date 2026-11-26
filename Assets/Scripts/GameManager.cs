@@ -52,6 +52,15 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    public bool SpendCoins(int amount)
+    {
+        if (amount < 0 || Coins < amount) return false;
+        Coins -= amount;
+        PlayerPrefs.SetInt(CoinsKey, Coins);
+        PlayerPrefs.Save();
+        return true;
+    }
+
     public void RegisterHide()
     {
         PlayerPrefs.SetInt("RUN_CICAAK_HIDE_COUNT", PlayerPrefs.GetInt("RUN_CICAAK_HIDE_COUNT", 0) + 1);
