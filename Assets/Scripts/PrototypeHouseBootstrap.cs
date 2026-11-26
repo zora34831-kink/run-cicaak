@@ -90,7 +90,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         BuildHumanModel(human.transform);
         HumanChaserAI ai = human.AddComponent<HumanChaserAI>();
         ai.target = player.transform;
-        ai.walkSpeed = 2.3f;
+        ai.walkSpeed = 4.0f;
 
         HumanProceduralAnimation humanAnimation = human.AddComponent<HumanProceduralAnimation>();
         humanAnimation.chaser = ai;
@@ -339,6 +339,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         binder.timerText = AddHudText(hud.transform, "TIME", new Vector2(0.02f, 0.85f));
         binder.bestText = AddHudText(hud.transform, "BEST", new Vector2(0.02f, 0.80f));
         binder.levelText = AddHudText(hud.transform, "LEVEL", new Vector2(0.88f, 0.95f));
+        binder.xpText = AddHudText(hud.transform, "XP", new Vector2(0.88f, 0.90f));
         CreateGameplayHint(canvasObject.transform);
     }
 
