@@ -80,6 +80,7 @@ public class GameManager : MonoBehaviour
         if (RunEnded) return;
         RunEnded = true;
         Escaped = escaped;
+        Time.timeScale = 1f;
 
         int best = PlayerPrefs.GetInt("RUN_CICAAK_BEST", 0);
         if (Score > best)
@@ -107,6 +108,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartRun()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
