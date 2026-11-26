@@ -1,0 +1,14 @@
+{
+  "name": "run-cicaak-functions",
+  "description": "Server-authoritative Indonesia leaderboard for RUN CICAAK",
+  "private": true,
+  "engines": { "node": "20" },
+  "main": "index.js",
+  "scripts": {
+    "lint": "node --check index.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.0.2",
+    "firebase-functions": "^6.3.2"
+  }
+}
