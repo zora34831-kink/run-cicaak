@@ -158,6 +158,7 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         GameObject canvasObject = new GameObject("RUN CICAAK Touch UI", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
         Canvas canvas = canvasObject.GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvasObject.AddComponent<RunEndOverlay>();
         CanvasScaler scaler = canvasObject.GetComponent<CanvasScaler>();
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         scaler.referenceResolution = new Vector2(1920, 1080);
