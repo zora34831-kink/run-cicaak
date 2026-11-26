@@ -27,7 +27,8 @@ public class HumanChaserAI : MonoBehaviour
 
     void Update()
     {
-        if (target == null || player == null || player.IsCaught) return;
+        if (target == null || player == null || player.IsCaught ||
+            (GameManager.Instance != null && GameManager.Instance.RunEnded)) return;
 
         if (player.IsHidden)
         {
