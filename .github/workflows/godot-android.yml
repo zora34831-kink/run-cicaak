@@ -32,8 +32,8 @@ jobs:
           SDK_ROOT="${ANDROID_HOME:-/usr/local/lib/android/sdk}"
           SDKMANAGER="$(find "$SDK_ROOT/cmdline-tools" -type f -name sdkmanager | head -n 1)"
           test -x "$SDKMANAGER"
-          yes | "$SDKMANAGER" --licenses
-          "$SDKMANAGER" --install "platform-tools" "platforms;android-35" "build-tools;35.0.1" "cmdline-tools;latest" "cmake;3.10.2.4988404" "ndk;28.1.13356709"
+          printf 'y\n%.0s' {1..100} | "$SDKMANAGER" --licenses
+          printf 'y\n%.0s' {1..100} | "$SDKMANAGER" --install "platform-tools" "platforms;android-35" "build-tools;35.0.1" "cmdline-tools;latest" "cmake;3.10.2.4988404" "ndk;28.1.13356709"
 
       - name: Setup Godot
         uses: chickensoft-games/setup-godot@v2
