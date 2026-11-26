@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (IsCaught) return;
+        if (IsCaught || (GameManager.Instance != null && GameManager.Instance.RunEnded)) return;
         if (cameraTransform == null && Camera.main != null)
             cameraTransform = Camera.main.transform;
 
