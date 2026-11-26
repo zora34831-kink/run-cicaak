@@ -202,15 +202,15 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         }
         else if (label == "KAMAR")
         {
-            CreateProp(label + " Bed Base", center + new Vector3(-2.7f, 0.32f, -2.7f), new Vector3(3.4f, 0.65f, 2.5f), furnitureMat);
-            CreateProp(label + " Mattress", center + new Vector3(-2.7f, 0.72f, -2.7f), new Vector3(3.25f, 0.22f, 2.35f), mattressMat);
-            CreateProp(label + " Pillow", center + new Vector3(-2.7f, 0.9f, -3.55f), new Vector3(1.05f, 0.2f, 0.55f), eyeMat);
+            CreateProp(label + " Bed Base", center + new Vector3(-2.7f, 0.32f, 2.7f), new Vector3(3.4f, 0.65f, 2.5f), furnitureMat);
+            CreateProp(label + " Mattress", center + new Vector3(-2.7f, 0.72f, 2.7f), new Vector3(3.25f, 0.22f, 2.35f), mattressMat);
+            CreateProp(label + " Pillow", center + new Vector3(-2.7f, 0.9f, 3.55f), new Vector3(1.05f, 0.2f, 0.55f), eyeMat);
         }
         else if (label == "GUDANG")
         {
-            CreateProp(label + " Storage Box A", center + new Vector3(-3.2f, 0.5f, -2.8f), new Vector3(1.2f, 1f, 1.2f), boxMat);
-            CreateProp(label + " Storage Box B", center + new Vector3(-2.5f, 1.45f, -2.8f), new Vector3(1.1f, 0.85f, 1.1f), boxMat);
-            CreateProp(label + " Storage Box C", center + new Vector3(-0.9f, 0.4f, -3.1f), new Vector3(1.5f, 0.8f, 1.2f), boxMat);
+            CreateProp(label + " Storage Box A", center + new Vector3(-3.2f, 0.5f, 2.8f), new Vector3(1.2f, 1f, 1.2f), boxMat);
+            CreateProp(label + " Storage Box B", center + new Vector3(-2.5f, 1.45f, 2.8f), new Vector3(1.1f, 0.85f, 1.1f), boxMat);
+            CreateProp(label + " Storage Box C", center + new Vector3(-0.9f, 0.4f, 3.1f), new Vector3(1.5f, 0.8f, 1.2f), boxMat);
             CreateProp(label + " Metal Shelf", center + new Vector3(3.6f, 1.2f, -2.8f), new Vector3(0.35f, 2.4f, 3.2f), applianceMat);
         }
     }
