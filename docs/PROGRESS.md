@@ -45,3 +45,5 @@ The repository is a playable-prototype codebase and build scaffold. It is not ye
 - [x] Gameplay HUD now displays the player's XP progress alongside level
 
 - [x] Android workflow now caches Unity Library and validates the generated APK archive before uploading the artifact
+
+- [x] Right-side level and XP HUD anchors corrected to stay within the landscape mobile screen
