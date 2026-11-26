@@ -84,10 +84,10 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         floor.transform.localScale = new Vector3(roomSize, 0.3f, roomSize);
         floor.GetComponent<Renderer>().material = floorMat;
 
-        CreateWall(label + " Wall North", center + new Vector3(0, 1.5f, roomSize / 2), new Vector3(roomSize, 3, 0.25f));
-        CreateWall(label + " Wall South", center + new Vector3(0, 1.5f, -roomSize / 2), new Vector3(roomSize, 3, 0.25f));
-        CreateWall(label + " Wall East", center + new Vector3(roomSize / 2, 1.5f, 0), new Vector3(0.25f, 3, roomSize));
-        CreateWall(label + " Wall West", center + new Vector3(-roomSize / 2, 1.5f, 0), new Vector3(0.25f, 3, roomSize));
+        CreateWallWithOpening(label + " Wall North", center, true, roomSize / 2, 2.4f);
+        CreateWallWithOpening(label + " Wall South", center, true, -roomSize / 2, 2.4f);
+        CreateWallWithOpening(label + " Wall East", center, false, roomSize / 2, 2.4f);
+        CreateWallWithOpening(label + " Wall West", center, false, -roomSize / 2, 2.4f);
 
         Vector3 furniturePosition = center + new Vector3(2.4f, 0.65f, 1.8f);
         GameObject cabinet = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -107,6 +107,23 @@ public class PrototypeHouseBootstrap : MonoBehaviour
         table.transform.position = center + new Vector3(-2.3f, 0.65f, -1.8f);
         table.transform.localScale = new Vector3(2.1f, 1.3f, 1.5f);
         table.GetComponent<Renderer>().material = furnitureMat;
+    }
+
+    void CreateWallWithOpening(string label, Vector3 center, bool horizontal, float edgeOffset, float openingWidth)
+    {
+        float segmentLength = (roomSize - openingWidth) * 0.5f;
+        if (horizontal)
+        {
+            float z = center.z + edgeOffset;
+            CreateWall(label + " A", new Vector3(center.x - (openingWidth + segmentLength) * 0.5f, 1.5f, z), new Vector3(segmentLength, 3, 0.25f));
+            CreateWall(label + " B", new Vector3(center.x + (openingWidth + segmentLength) * 0.5f, 1.5f, z), new Vector3(segmentLength, 3, 0.25f));
+        }
+        else
+        {
+            float x = center.x + edgeOffset;
+            CreateWall(label + " A", new Vector3(x, 1.5f, center.z - (openingWidth + segmentLength) * 0.5f), new Vector3(0.25f, 3, segmentLength));
+            CreateWall(label + " B", new Vector3(x, 1.5f, center.z + (openingWidth + segmentLength) * 0.5f), new Vector3(0.25f, 3, segmentLength));
+        }
     }
 
     void CreateWall(string label, Vector3 position, Vector3 scale)
