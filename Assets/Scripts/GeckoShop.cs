@@ -45,9 +45,16 @@ public class GeckoShop : MonoBehaviour
 
         if (!IsOwned(id))
         {
-            int wallet = PlayerPrefs.GetInt("RUN_CICAAK_WALLET", 0);
-            if (wallet < skin.price) return false;
-            PlayerPrefs.SetInt("RUN_CICAAK_WALLET", wallet - skin.price);
+            if (GameManager.Instance != null)
+            {
+                if (!GameManager.Instance.SpendCoins(skin.price)) return false;
+            }
+            else
+            {
+                int wallet = PlayerPrefs.GetInt("RUN_CICAAK_WALLET", 0);
+                if (wallet < skin.price) return false;
+                PlayerPrefs.SetInt("RUN_CICAAK_WALLET", wallet - skin.price);
+            }
             PlayerPrefs.SetInt("RUN_CICAAK_SKIN_OWNED_" + id, 1);
         }
 
